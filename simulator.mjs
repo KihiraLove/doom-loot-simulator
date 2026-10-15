@@ -26,13 +26,13 @@ export const ITEMS = [
   { id: "ranarr-seed", name: "Ranarr seed", min: 1, max: 3, weight: 6 },
   // The wiki lists shark lures in even-numbered stacks at delve 3.
   { id: "shark-lure", name: "Shark lure", min: 40, max: 70, step: 2, weight: 5 },
-  { id: "tooth-half-of-key", name: "Tooth half of key (moon key)", min: 1, max: 1, weight: 3 },
+  { id: "tooth-half-of-key", name: "Tooth half of key", min: 1, max: 1, weight: 3 },
   { id: "dragon-platelegs", name: "Dragon platelegs", min: 2, max: 4, weight: 3, noted: true }
 ];
 
 export const SPECIAL_ITEMS = [
   { id: "mokhaiotl-cloth", name: "Mokhaiotl cloth", minimumDepth: 2 },
-  { id: "eye-of-ayak", name: "Eye of ayak (uncharged)", minimumDepth: 3 },
+  { id: "eye-of-ayak", name: "Eye of ayak", minimumDepth: 3 },
   { id: "avernic-treads", name: "Avernic treads", minimumDepth: 4 },
   { id: "dom", name: "Dom", minimumDepth: 6 }
 ];

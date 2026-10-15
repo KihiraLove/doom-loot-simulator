@@ -1,5 +1,8 @@
 # Doom of Mokhaiotl — Loot Simulator
 
+[![Deploy GitHub Pages](https://github.com/KihiraLove/doom-loot-simulator/actions/workflows/pages.yml/badge.svg)](https://github.com/KihiraLove/doom-loot-simulator/actions/workflows/pages.yml)
+[![Ko-fi](https://img.shields.io/badge/Ko--fi-Support%20me-29ABE0?logo=ko-fi&logoColor=white)](https://ko-fi.com/KihiraLove)
+
 An unofficial, **frontend-only** [Old School RuneScape](https://oldschool.runescape.wiki/) loot simulator for the [Doom of Mokhaiotl](https://oldschool.runescape.wiki/w/Doom_of_Mokhaiotl). Hosted with GitHub Pages. No backend, build dependencies or runtime Wiki API calls.
 
 ## Features
@@ -19,7 +22,7 @@ An unofficial, **frontend-only** [Old School RuneScape](https://oldschool.runesc
 
 The dry calculator follows the probability approach of the [OSRS Wiki dry calculator](https://oldschool.runescape.wiki/w/Calculator:Dry_calc), extended for the different unique drop rates at each floor. For each selected completed delve, that specific level contributes one chance of obtaining a particular item. For each item separately, these Bernoulli trials form a Poisson-binomial count distribution. The implementation groups equal-rate trials as binomial distributions and convolves them for numerical accuracy.
 
-For an item with observed count `k`, **fewer** = `P(X < k)`, **exactly** = `P(X = k)`, and **more** = `P(X > k)`. The three probabilities sum to 100% (subject to normal rounding). Each item also shows its expected count and number of eligible floor rolls. Unlike a single-drop dry formula, this supports varying floor probabilities.
+For an item with observed count `k`, **fewer** = `P(X < k)`, **exactly** = `P(X = k)`, and **more** = `P(X > k)`. The three probabilities sum to 100% (subject to normal rounding). Each item also shows its expected drop count. Unlike a single-drop dry formula, this supports varying floor probabilities.
 
 **Important:** the four individual probabilities are **per item**, not the joint probability of obtaining all four entered counts together. The **Any unique drop** result instead models the **total** unique-item count: each floor has one mutually exclusive equipment roll (with its chance equal to the sum of eligible equipment-item probabilities) and an independent Dom pet roll. Those two rolls can both succeed on a floor. Its at-least-one chance is calculated as one minus the probability of no eligible unique reward from any entered delve. Cloth, Eye of ayak, and treads are mutually exclusive within an equipment roll; Dom uses an independent pet roll. The algorithm omits only numerically negligible distribution tails at the maximum supported simulation size. Extremely small outcomes may be rendered as approximately 0%.
 

@@ -104,12 +104,6 @@ h3 { font-size: 1.06rem; }
   appearance: textfield; -moz-appearance: textfield;
 }
 .depth-field input::-webkit-inner-spin-button, .depth-field input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-.planned-summary {
-  display: flex; justify-content: space-between; align-items: baseline; gap: .5rem;
-  border-top: 1px solid var(--border-soft); padding-top: 14px; margin-top: 16px;
-  color: var(--muted); font-size: .83rem;
-}
-.planned-summary strong { color: var(--text); text-align: right; font-variant-numeric: tabular-nums; }
 .action-row { display: flex; gap: 9px; margin-top: 16px; }
 .primary-action {
   flex: 1; min-height: 44px;
@@ -121,7 +115,6 @@ h3 { font-size: 1.06rem; }
 .primary-action:hover { background: var(--accent-strong); }
 .secondary-action { padding: 10px 16px; }
 .validation-message { color: var(--danger); margin: 12px 0 0; font-size: .85rem; }
-.hint { font-size: .78rem; margin: 16px 0 0; }
 .empty-state {
   text-align: center; padding: clamp(40px, 8vw, 95px) 14px;
   border: 1px dashed var(--border);
@@ -321,3 +314,62 @@ footer {
 .any-drop-chance span { color: var(--muted); font-size: .9rem; }
 .any-drop-chance strong { color: var(--accent-strong); font-size: 1.55rem; font-variant-numeric: tabular-nums; }
 .dry-total-card > .muted { font-size: .78rem; margin: 0; }
+
+/* Match the BingoPlayerStats Ko-fi banner and footer. */
+.site-header { flex-wrap: wrap; }
+.site-header .kofi-banner {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  align-self: flex-start;
+  margin-left: auto;
+  border-radius: 999px;
+  background: #29abe0;
+  color: #fff;
+  padding: 9px 14px;
+  font-size: .9rem;
+  font-weight: 800;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 8px 24px rgba(41,171,224,.22);
+  transition: transform 120ms ease-out, filter 120ms ease-out;
+}
+.site-header .kofi-banner:hover { transform: translateY(-1px); filter: brightness(1.06); }
+.site-header .kofi-banner:focus-visible { outline: 2px solid var(--text); outline-offset: 3px; }
+.site-header .kofi-banner img {
+  display: block;
+  width: 24px;
+  height: 24px;
+  max-width: 24px;
+  max-height: 24px;
+  flex: 0 0 24px;
+  object-fit: contain;
+}
+.site-header .kofi-banner-label { display: inline-block; }
+footer {
+  border-top: 0;
+  align-items: center;
+  padding: 18px 4px 28px;
+  gap: 16px;
+  font-size: .82rem;
+}
+footer p { margin: 0; }
+.footer-meta { display: grid; gap: 3px; }
+.footer-meta strong { color: var(--muted); font-weight: 700; }
+.footer-actions { display: flex; align-items: center; gap: 12px; }
+.text-button {
+  min-height: auto;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  padding: 2px 0;
+  font-size: .82rem;
+  font-weight: 600;
+  text-decoration: underline;
+}
+.text-button:hover { color: var(--text); }
+@media (max-width: 760px) {
+  .site-header .kofi-banner { align-self: flex-start; margin-left: 0; }
+  footer { align-items: flex-start; flex-direction: column; }
+}

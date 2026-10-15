@@ -15,6 +15,10 @@
   <header class="site-header">
     <div class="brand-mark"><img src="./assets/items/dom.png" alt="" width="42" height="42"></div>
     <h1>Doom of Mokhaiotl <span>Loot Simulator</span></h1>
+    <a class="kofi-banner" href="https://ko-fi.com/KihiraLove" target="_blank" rel="noopener noreferrer" aria-label="Support KihiraLove on Ko-fi">
+      <img src="https://storage.ko-fi.com/cdn/cup-border.png" alt="" aria-hidden="true" width="24" height="24">
+      <span class="kofi-banner-label">Support me on Ko-fi</span>
+    </a>
   </header>
 
   <div class="mode-switch" role="group" aria-label="Calculator mode">
@@ -29,17 +33,14 @@
         <div id="depth-inputs" class="depth-inputs"></div>
         <div id="dry-fields" class="dry-fields" hidden>
           <h3>Drops obtained</h3>
-          <p class="muted">How many of each unique did you receive across these runs?</p>
           <div id="dry-inputs" class="dry-inputs"></div>
         </div>
-        <div class="planned-summary"><span>Planned delves</span><strong id="planned-runs">0 delves · 0 drop rolls</strong></div>
         <p id="validation-message" class="validation-message" role="alert" hidden></p>
         <div class="action-row">
           <button type="submit" class="primary-action" id="simulate-button"><span id="action-label">Simulate loot</span> <span aria-hidden="true">→</span></button>
           <button type="button" class="secondary-action" id="clear-button">Clear</button>
         </div>
       </form>
-      <p class="hint">Each count is one completed delve at that level. To represent one full run to level 8, enter 1 for each level from 1 through 8. Delves 9 and above share the 9+ rates. Maximum 1,000,000 drop rolls.</p>
     </section>
 
     <section id="loot-panel" class="panel overview-panel" aria-labelledby="results-heading">
@@ -54,9 +55,8 @@
       <div id="results-content" hidden>
         <div class="subheading"><h3>Unique rewards</h3></div>
         <div id="unique-grid" class="unique-grid"></div>
-        <div class="subheading inventory-title"><h3>Collected loot</h3><span id="item-count">0 types</span></div>
+        <div class="subheading inventory-title"><h3>Collected loot</h3></div>
         <div id="loot-grid" class="loot-grid"></div>
-        <p class="muted note">Quantities are combined across simulated delves. Simulate again to reroll.</p>
       </div>
     </section>
     <section id="dry-panel" class="panel dry-panel" aria-labelledby="dry-heading" hidden>
@@ -67,16 +67,19 @@
         <p>Enter your completed delves at each level and the four unique-drop counts to calculate the odds.</p>
       </div>
       <div id="dry-results" hidden>
-        <p class="muted dry-intro">Odds across the configured delves, including the total of all four unique rewards.</p>
         <div id="dry-results-grid" class="dry-results-grid"></div>
-        <p class="hint">The “Any unique drop” result combines all four drop counts; the individual item results are calculated separately. Equipment drops share a roll, while Dom rolls independently. Very small probabilities may round to zero.</p>
       </div>
     </section>
   </main>
 
   <footer>
-    <span>Unofficial fan project. Not affiliated with Jagex.</span>
-    <span>Drop data: <a href="https://oldschool.runescape.wiki/w/Doom_of_Mokhaiotl">OSRS Wiki</a> · Images stored locally · <a href="https://github.com/KihiraLove/doom-loot-simulator">GitHub</a></span>
+    <div class="footer-meta">
+      <p><strong>Drop data:</strong> <a href="https://oldschool.runescape.wiki/w/Doom_of_Mokhaiotl" target="_blank" rel="noopener noreferrer">OSRS Wiki</a></p>
+      <p>No data is stored, collected, or sold by this site.</p>
+    </div>
+    <div class="footer-actions">
+      <a class="text-button" href="https://github.com/KihiraLove/doom-loot-simulator" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </div>
   </footer>
 </body>
 </html>

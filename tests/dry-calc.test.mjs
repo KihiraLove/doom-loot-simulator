@@ -201,7 +201,8 @@ test("UI has no preset buttons and includes the aggregate unique-drop result", (
   assert.ok(!html.includes("data-preset-depth"));
   assert.ok(!app.includes("data-preset-depth"));
   assert.ok(app.includes("Any unique drop"));
-  assert.ok(app.includes("Chance of at least one unique drop"));
+  assert.ok(app.includes('caption.textContent = "At least one"'));
+  assert.ok(!app.includes("Chance of at least one unique drop"));
 });
 
 test("every row of the supplied unique drop table matches the dry calculator", () => {

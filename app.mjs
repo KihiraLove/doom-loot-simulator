@@ -1,5 +1,5 @@
 import {
-  SPECIAL_ITEMS, ITEM_DETAILS, MAX_DEPTH, MAX_FLOOR_ROLLS,
+  SPECIAL_ITEMS, ITEM_DETAILS, MAX_DEPTH,
   gearDenominator, domDenominator, simulate, validatePlan
 } from "./simulator.mjs";
 import { calculateDryResults } from "./dry-calc.mjs";
@@ -8,7 +8,6 @@ const inputs = document.getElementById("depth-inputs");
 const form = document.getElementById("simulator-form");
 const clearButton = document.getElementById("clear-button");
 const validationMessage = document.getElementById("validation-message");
-const plannedRuns = document.getElementById("planned-runs");
 const emptyState = document.getElementById("empty-state");
 const resultsContent = document.getElementById("results-content");
 const uniqueGrid = document.getElementById("unique-grid");
@@ -42,7 +41,7 @@ function makeDepthField(depth) {
   input.step = "1";
   input.value = "0";
   input.dataset.depth = String(depth);
-  input.setAttribute("aria-label", "Runs ending at delve " + depthLabel(depth));
+  input.setAttribute("aria-label", "Completed delves at level " + depthLabel(depth));
   input.setAttribute("inputmode", "numeric");
 
   label.append(caption, input);
@@ -109,8 +108,7 @@ function renderDryResultCard(result, name, spriteId, combined = false) {
   const heading = document.createElement("h3");
   heading.textContent = name;
   const expected = document.createElement("p");
-  expected.textContent = "Expected: " + numberWithDecimals(result.expected) +
-    " · Eligible drop rolls: " + number(result.attempts);
+  expected.textContent = "Expected: " + numberWithDecimals(result.expected);
   title.append(heading, expected);
   header.append(makeSprite(spriteId), title);
   card.append(header);
@@ -119,17 +117,11 @@ function renderDryResultCard(result, name, spriteId, combined = false) {
     const atLeastOne = document.createElement("p");
     atLeastOne.className = "any-drop-chance";
     const caption = document.createElement("span");
-    caption.textContent = "Chance of at least one unique drop";
+    caption.textContent = "At least one";
     const value = document.createElement("strong");
     value.textContent = probabilityText(result.atLeastOne);
     atLeastOne.append(caption, value);
     card.append(atLeastOne);
-
-    const explanation = document.createElement("p");
-    explanation.className = "muted";
-    explanation.textContent = "Compared against " + number(result.count) +
-      " total drops entered across cloth, Eye, treads and Dom.";
-    card.append(explanation);
   }
 
   const odds = document.createElement("div");
@@ -195,19 +187,6 @@ function showError(message) {
   validationMessage.hidden = !message;
 }
 
-function updatePlanSummary() {
-  try {
-    const plan = readPlan();
-    const runs = plan.reduce((sum, row) => sum + row.count, 0);
-    const floors = plan.reduce((sum, row) => sum + row.count, 0);
-    plannedRuns.textContent = number(runs) + " delves · " + number(floors) + " drop rolls";
-    plannedRuns.style.color = floors > MAX_FLOOR_ROLLS ? "var(--danger)" : "";
-  } catch {
-    plannedRuns.textContent = "Check your run counts";
-    plannedRuns.style.color = "var(--danger)";
-  }
-}
-
 function makeSprite(id) {
   const image = document.createElement("img");
   image.src = "./assets/items/" + id + ".png";
@@ -249,7 +228,6 @@ function renderLoot(result) {
     .filter(([id, count]) => count > 0 && !specialIds.has(id))
     .sort((a, b) => b[1] - a[1] || (ITEM_DETAILS[a[0]]?.name || "").localeCompare(ITEM_DETAILS[b[0]]?.name || ""));
 
-  document.getElementById("item-count").textContent = number(entries.length) + " item types";
   for (const [id, count] of entries) {
     const item = ITEM_DETAILS[id];
     const entry = document.createElement("div");
@@ -292,18 +270,15 @@ dryInputs.addEventListener("input", () => {
   showError("");
   clearDryResults();
 });
-updatePlanSummary();
 
 inputs.addEventListener("input", () => {
   clearDryResults();
   showError("");
-  updatePlanSummary();
 });
 
 clearButton.addEventListener("click", () => {
   inputs.querySelectorAll("input").forEach(input => { input.value = "0"; });
   dryInputs.querySelectorAll("input").forEach(input => { input.value = "0"; });
-  updatePlanSummary();
   showError("");
   clearResults();
   clearDryResults();
