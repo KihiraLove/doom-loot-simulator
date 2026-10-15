@@ -2,6 +2,7 @@ import {
   SPECIAL_ITEMS, ITEM_DETAILS, MAX_DEPTH, MAX_FLOOR_ROLLS,
   gearDenominator, domDenominator, simulate, validatePlan
 } from "./simulator.mjs";
+import { calculateDryResults } from "./dry-calc.mjs";
 
 const inputs = document.getElementById("depth-inputs");
 const form = document.getElementById("simulator-form");
@@ -13,6 +14,17 @@ const resultsContent = document.getElementById("results-content");
 const uniqueGrid = document.getElementById("unique-grid");
 const lootGrid = document.getElementById("loot-grid");
 const formatter = new Intl.NumberFormat("en-US");
+const lootModeButton = document.getElementById("mode-loot");
+const dryModeButton = document.getElementById("mode-dry");
+const lootPanel = document.getElementById("loot-panel");
+const dryPanel = document.getElementById("dry-panel");
+const dryFields = document.getElementById("dry-fields");
+const dryInputs = document.getElementById("dry-inputs");
+const dryEmpty = document.getElementById("dry-empty");
+const dryResults = document.getElementById("dry-results");
+const dryResultsGrid = document.getElementById("dry-results-grid");
+const actionLabel = document.getElementById("action-label");
+let mode = "loot";
 
 function number(value) { return formatter.format(value); }
 function depthLabel(depth) { return depth === MAX_DEPTH ? "9+" : String(depth); }
@@ -35,6 +47,109 @@ function makeDepthField(depth) {
 
   label.append(caption, input);
   inputs.append(label);
+}
+
+function makeDryField(item) {
+  const label = document.createElement("label");
+  label.className = "dry-field";
+  const icon = makeSprite(item.id);
+  const name = document.createElement("span");
+  name.textContent = item.name;
+  const input = document.createElement("input");
+  input.type = "number";
+  input.min = "0";
+  input.step = "1";
+  input.value = "0";
+  input.dataset.itemId = item.id;
+  input.setAttribute("aria-label", item.name + " received");
+  input.setAttribute("inputmode", "numeric");
+  label.append(icon, name, input);
+  dryInputs.append(label);
+}
+
+function readDryCounts() {
+  const counts = {};
+  for (const input of dryInputs.querySelectorAll("input")) {
+    const raw = input.value.trim();
+    if (!/^(0|[1-9]\d*)$/.test(raw) || !Number.isSafeInteger(Number(raw))) {
+      const name = SPECIAL_ITEMS.find(item => item.id === input.dataset.itemId).name;
+      throw new RangeError("Enter a non-negative whole number for " + name + ".");
+    }
+    counts[input.dataset.itemId] = Number(raw);
+  }
+  return counts;
+}
+
+function probabilityText(probability) {
+  if (probability === 0) return "0%";
+  if (probability === 1) return "100%";
+  const value = probability * 100;
+  if (value < 0.000001) return "<0.000001%";
+  if (value > 99.999999) return ">99.999999%";
+  return value.toFixed(value < 1 ? 4 : 2) + "%";
+}
+
+function addProbabilityCell(container, label, probability) {
+  const cell = document.createElement("div");
+  cell.className = "dry-outcome";
+  const title = document.createElement("span");
+  title.textContent = label;
+  const value = document.createElement("strong");
+  value.textContent = probabilityText(probability);
+  cell.append(title, value);
+  container.append(cell);
+}
+
+function renderDryResults(results) {
+  dryResultsGrid.replaceChildren();
+  for (const item of SPECIAL_ITEMS) {
+    const result = results[item.id];
+    const card = document.createElement("section");
+    card.className = "dry-result-card";
+    const header = document.createElement("div");
+    header.className = "dry-result-heading";
+    const title = document.createElement("div");
+    const name = document.createElement("h3");
+    name.textContent = item.name;
+    const expected = document.createElement("p");
+    expected.textContent = "Expected: " + numberWithDecimals(result.expected) +
+      " · Eligible floor rolls: " + number(result.attempts);
+    title.append(name, expected);
+    header.append(makeSprite(item.id), title);
+
+    const odds = document.createElement("div");
+    odds.className = "dry-outcomes";
+    addProbabilityCell(odds, "Fewer than " + number(result.count), result.fewer);
+    addProbabilityCell(odds, "Exactly " + number(result.count), result.exact);
+    addProbabilityCell(odds, "More than " + number(result.count), result.more);
+    card.append(header, odds);
+    dryResultsGrid.append(card);
+  }
+  dryEmpty.hidden = true;
+  dryResults.hidden = false;
+}
+
+function numberWithDecimals(value) {
+  return value.toLocaleString("en-US", { maximumFractionDigits: 2 });
+}
+
+function clearDryResults() {
+  dryEmpty.hidden = false;
+  dryResults.hidden = true;
+}
+
+function selectMode(next) {
+  mode = next;
+  const isDry = mode === "dry";
+  dryFields.hidden = !isDry;
+  dryPanel.hidden = !isDry;
+  lootPanel.hidden = isDry;
+  lootModeButton.classList.toggle("is-active", !isDry);
+  dryModeButton.classList.toggle("is-active", isDry);
+  lootModeButton.setAttribute("aria-pressed", String(!isDry));
+  dryModeButton.setAttribute("aria-pressed", String(isDry));
+  actionLabel.textContent = isDry ? "Calculate chances" : "Simulate loot";
+  showError("");
 }
 
 function readPlan() {
@@ -146,9 +261,17 @@ function clearResults() {
 }
 
 for (let depth = 1; depth <= MAX_DEPTH; depth++) makeDepthField(depth);
+for (const item of SPECIAL_ITEMS) makeDryField(item);
+lootModeButton.addEventListener("click", () => selectMode("loot"));
+dryModeButton.addEventListener("click", () => selectMode("dry"));
+dryInputs.addEventListener("input", () => {
+  showError("");
+  clearDryResults();
+});
 updatePlanSummary();
 
 inputs.addEventListener("input", () => {
+  clearDryResults();
   showError("");
   updatePlanSummary();
 });
@@ -160,15 +283,18 @@ document.querySelectorAll("[data-preset-depth]").forEach(button => {
       input.value = Number(input.dataset.depth) === depth ? button.dataset.presetCount : "0";
     });
     showError("");
+    clearDryResults();
     updatePlanSummary();
   });
 });
 
 clearButton.addEventListener("click", () => {
   inputs.querySelectorAll("input").forEach(input => { input.value = "0"; });
+  dryInputs.querySelectorAll("input").forEach(input => { input.value = "0"; });
   updatePlanSummary();
   showError("");
   clearResults();
+  clearDryResults();
 });
 
 form.addEventListener("submit", event => {
@@ -177,7 +303,8 @@ form.addEventListener("submit", event => {
   try {
     const plan = readPlan();
     validatePlan(plan);
-    renderResult(simulate(plan));
+    if (mode === "dry") renderDryResults(calculateDryResults(plan, readDryCounts()));
+    else renderResult(simulate(plan));
   } catch (error) {
     showError(error instanceof Error ? error.message : "The simulation could not be completed.");
   }
