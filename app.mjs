@@ -184,7 +184,7 @@ function readPlan() {
     }
     const count = Number(raw);
     if (!Number.isSafeInteger(count)) {
-      throw new RangeError("Run count for delve " + depthLabel(Number(input.dataset.depth)) + " is too large.");
+      throw new RangeError("Delve count for level " + depthLabel(Number(input.dataset.depth)) + " is too large.");
     }
     return { depth: Number(input.dataset.depth), count };
   }).filter(row => row.count > 0);
@@ -199,8 +199,8 @@ function updatePlanSummary() {
   try {
     const plan = readPlan();
     const runs = plan.reduce((sum, row) => sum + row.count, 0);
-    const floors = plan.reduce((sum, row) => sum + row.depth * row.count, 0);
-    plannedRuns.textContent = number(runs) + " runs · " + number(floors) + " floor rolls";
+    const floors = plan.reduce((sum, row) => sum + row.count, 0);
+    plannedRuns.textContent = number(runs) + " delves · " + number(floors) + " drop rolls";
     plannedRuns.style.color = floors > MAX_FLOOR_ROLLS ? "var(--danger)" : "";
   } catch {
     plannedRuns.textContent = "Check your run counts";

@@ -40,7 +40,7 @@ export const SPECIAL_ITEMS = [
 export const CLUE = { id: "clue-scroll-elite", name: "Clue scroll (elite)" };
 export const ITEM_DETAILS = Object.fromEntries([...ITEMS, ...SPECIAL_ITEMS, CLUE].map(item => [item.id, item]));
 export const TABLE_SIZE = 312;
-// All deeper delves use the level-9 rate tier. The 9+ input represents a nine-floor run.
+// All deeper delves use the level-9 rate tier. Each input represents a single delve roll.
 export const MAX_DEPTH = 9;
 export const MAX_FLOOR_ROLLS = 1_000_000;
 
@@ -119,15 +119,16 @@ export function validatePlan(plan) {
       throw new RangeError("Delve depth must be a whole number from 1 to 9 (9+ category).");
     }
     if (!Number.isSafeInteger(row.count) || row.count < 0) {
-      throw new RangeError("Runs must be a non-negative whole number.");
+      throw new RangeError("Delve counts must be non-negative whole numbers.");
     }
     runs += row.count;
-    floors += row.depth * row.count;
+    // Entries count individual completed delves, not full runs ending at that depth.
+    floors += row.count;
     if (floors > MAX_FLOOR_ROLLS || !Number.isSafeInteger(floors)) {
-      throw new RangeError("Limit your selection to " + MAX_FLOOR_ROLLS.toLocaleString("en") + " total floor rolls per simulation.");
+      throw new RangeError("Limit your selection to " + MAX_FLOOR_ROLLS.toLocaleString("en") + " total delve rolls per simulation.");
     }
   }
-  if (!runs) throw new RangeError("Enter at least one completed run to simulate.");
+  if (!runs) throw new RangeError("Enter at least one completed delve to simulate.");
   return { runs, floors };
 }
 
@@ -137,24 +138,22 @@ export function simulate(plan, rng = Math.random) {
   const add = (id, count) => { drops[id] = (drops[id] ?? 0) + count; };
 
   for (const { depth, count } of plan) {
-    for (let run = 0; run < count; run++) {
-      for (let floor = 1; floor <= depth; floor++) {
-        // Every completed floor grants one roll on the 312-slot table.
-        const common = rollCommon(rng);
-        add(common.id, rollQuantity(common, floor, rng));
+    for (let delve = 0; delve < count; delve++) {
+      // A counted delve is a single completed floor at the selected tier.
+      // A complete run to depth N is entered as one delve at each level 1..N.
+      const common = rollCommon(rng);
+      add(common.id, rollQuantity(common, depth, rng));
 
-        // Guaranteed rewards are cumulative for a claimed run.
-        const tears = guaranteedTears(floor);
-        if (tears) add("demon-tear", tears);
+      // Guaranteed tears and unique drops are NOT quantity-multiplied.
+      const tears = guaranteedTears(depth);
+      if (tears) add("demon-tear", tears);
 
-        // Tertiary elite clues are separate from the common loot roll.
-        if (rng() < 1 / (floor < 3 ? 75 : 50)) add(CLUE.id, 1);
+      if (rng() < 1 / (depth < 3 ? 75 : 50)) add(CLUE.id, 1);
 
-        const gear = rollGear(floor, rng);
-        if (gear) add(gear, 1);
+      const gear = rollGear(depth, rng);
+      if (gear) add(gear, 1);
 
-        if (rollDom(floor, rng)) add("dom", 1);
-      }
+      if (rollDom(depth, rng)) add("dom", 1);
     }
   }
 

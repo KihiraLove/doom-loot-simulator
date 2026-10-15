@@ -22,7 +22,7 @@ export function uniqueRollGroups(plan, itemId) {
   for (let floor = 1; floor <= MAX_DEPTH; floor++) {
     const probability = uniqueDropProbability(itemId, floor);
     if (probability === 0) continue;
-    const trials = plan.reduce((sum, row) => sum + (row.depth >= floor ? row.count : 0), 0);
+    const trials = plan.reduce((sum, row) => sum + (row.depth === floor ? row.count : 0), 0);
     if (trials) groups.push({ floor, trials, probability });
   }
   return groups;
@@ -128,7 +128,7 @@ export function anyUniqueRollGroups(plan) {
   validatePlan(plan);
   const groups = [];
   for (let floor = 1; floor <= MAX_DEPTH; floor++) {
-    const trials = plan.reduce((sum, row) => sum + (row.depth >= floor ? row.count : 0), 0);
+    const trials = plan.reduce((sum, row) => sum + (row.depth === floor ? row.count : 0), 0);
     if (!trials) continue;
 
     const eligibleGear = SPECIAL_ITEMS.slice(0, 3)

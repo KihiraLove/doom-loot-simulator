@@ -24,7 +24,7 @@
 
   <main id="main" class="layout">
     <section class="panel controls-panel" aria-labelledby="plan-heading">
-      <div class="section-heading"><h2 id="plan-heading">Your delve runs</h2></div>
+      <div class="section-heading"><h2 id="plan-heading">Your delves</h2></div>
       <form id="simulator-form" novalidate>
         <div id="depth-inputs" class="depth-inputs"></div>
         <div id="dry-fields" class="dry-fields" hidden>
@@ -32,14 +32,14 @@
           <p class="muted">How many of each unique did you receive across these runs?</p>
           <div id="dry-inputs" class="dry-inputs"></div>
         </div>
-        <div class="planned-summary"><span>Planned runs</span><strong id="planned-runs">0 runs · 0 floor rolls</strong></div>
+        <div class="planned-summary"><span>Planned delves</span><strong id="planned-runs">0 delves · 0 drop rolls</strong></div>
         <p id="validation-message" class="validation-message" role="alert" hidden></p>
         <div class="action-row">
           <button type="submit" class="primary-action" id="simulate-button"><span id="action-label">Simulate loot</span> <span aria-hidden="true">→</span></button>
           <button type="button" class="secondary-action" id="clear-button">Clear</button>
         </div>
       </form>
-      <p class="hint">9+ uses the level-9 rates and nine floor rolls per run. Maximum 1,000,000 floor rolls per simulation.</p>
+      <p class="hint">Each count is one completed delve at that level. To represent one full run to level 8, enter 1 for each level from 1 through 8. Delves 9 and above share the 9+ rates. Maximum 1,000,000 drop rolls.</p>
     </section>
 
     <section id="loot-panel" class="panel overview-panel" aria-labelledby="results-heading">
@@ -49,14 +49,14 @@
       <div id="empty-state" class="empty-state">
         <div class="empty-orb"><img src="./assets/items/eye-of-ayak.png" alt="" width="62" height="62"></div>
         <h3>Nothing claimed yet</h3>
-        <p>Choose your delve depths, then simulate to see the spoils of the Doom.</p>
+        <p>Enter the number of completed delves at each level to simulate their combined loot.</p>
       </div>
       <div id="results-content" hidden>
         <div class="subheading"><h3>Unique rewards</h3></div>
         <div id="unique-grid" class="unique-grid"></div>
         <div class="subheading inventory-title"><h3>Collected loot</h3><span id="item-count">0 types</span></div>
         <div id="loot-grid" class="loot-grid"></div>
-        <p class="muted note">Quantities are combined across simulated runs. Simulate again to reroll.</p>
+        <p class="muted note">Quantities are combined across simulated delves. Simulate again to reroll.</p>
       </div>
     </section>
     <section id="dry-panel" class="panel dry-panel" aria-labelledby="dry-heading" hidden>
@@ -64,10 +64,10 @@
       <div id="dry-empty" class="empty-state">
         <div class="empty-orb"><img src="./assets/items/mokhaiotl-cloth.png" width="62" height="62" alt=""></div>
         <h3>How lucky are your drops?</h3>
-        <p>Choose your delve runs, enter your four drop counts, and calculate the odds.</p>
+        <p>Enter your completed delves at each level and the four unique-drop counts to calculate the odds.</p>
       </div>
       <div id="dry-results" hidden>
-        <p class="muted dry-intro">Odds across the configured delve runs, including the total of all four unique rewards.</p>
+        <p class="muted dry-intro">Odds across the configured delves, including the total of all four unique rewards.</p>
         <div id="dry-results-grid" class="dry-results-grid"></div>
         <p class="hint">The “Any unique drop” result combines all four drop counts; the individual item results are calculated separately. Equipment drops share a roll, while Dom rolls independently. Very small probabilities may round to zero.</p>
       </div>
