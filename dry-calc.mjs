@@ -163,7 +163,7 @@ export function calculateAnyUniqueResult(plan, counts) {
   const logNone = groups.reduce(
     (sum, group) => sum + group.trials * Math.log1p(-group.probability), 0
   );
-  return { count, ...odds, atLeastOne: -Math.expm1(logNone) };
+  return { count, ...odds, atLeastOne: groups.length ? -Math.expm1(logNone) : 0 };
 }
 
 export function calculateDryResults(plan, counts) {
