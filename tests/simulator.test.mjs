@@ -84,8 +84,19 @@ test("different claimed end depths each include all earlier floors", () => {
 
 test("simulation rejects invalid or expensive plans", () => {
   assert.throws(() => validatePlan([]), /at least one/);
-  assert.throws(() => validatePlan([{depth: 51, count: 1}]), /Delve depth/);
+  assert.throws(() => validatePlan([{depth: 10, count: 1}]), /Delve depth/);
+  assert.doesNotThrow(() => validatePlan([{depth: 9, count: 1}]));
   assert.throws(() => validatePlan([{depth: 3, count: -1}]), /non-negative/);
   assert.throws(() => validatePlan([{depth: 1.5, count: 1}]), /Delve depth/);
-  assert.throws(() => validatePlan([{depth: 16, count: Math.floor(MAX_FLOOR_ROLLS / 16) + 1}]), /Limit/);
+  assert.throws(() => validatePlan([{depth: 9, count: Math.floor(MAX_FLOOR_ROLLS / 9) + 1}]), /Limit/);
+});
+
+test("9+ input simulates a nine-floor run with capped rates", () => {
+  const result = simulate([{depth: 9, count: 1}], () => .9999);
+  assert.equal(result.floors, 9);
+  assert.equal(result.runs, 1);
+  assert.equal(result.drops["demon-tear"], 550);
+  assert.equal(gearDenominator(9), gearDenominator(16));
+  assert.equal(domDenominator(9), domDenominator(16));
+  assert.equal(quantityMultiplier(9), quantityMultiplier(16));
 });

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#10130f">
-  <meta name="description" content="Simulate complete Doom of Mokhaiotl delve runs with OSRS Wiki drop rates. Runs entirely in your browser.">
+  <meta name="theme-color" content="#11100d">
+  <meta name="description" content="Simulate Doom of Mokhaiotl loot drops for delves 1–8 and 9+. Runs entirely in your browser.">
   <title>Doom of Mokhaiotl | Loot Simulator</title>
   <link rel="icon" type="image/png" href="./assets/items/dom.png">
   <link rel="stylesheet" href="./styles.css">
@@ -14,27 +14,18 @@
   <a class="skip-link" href="#main">Skip to simulator</a>
   <header class="site-header">
     <div class="brand-mark"><img src="./assets/items/dom.png" alt="" width="42" height="42"></div>
-    <div>
-      <span class="eyebrow">Old School RuneScape · Fan-made tool</span>
-      <h1>Doom of Mokhaiotl <span>Loot Simulator</span></h1>
-      <p>How deep will you delve?</p>
-    </div>
-    <a class="source-link" href="https://oldschool.runescape.wiki/w/Doom_of_Mokhaiotl" target="_blank" rel="noopener noreferrer">OSRS Wiki <span aria-hidden="true">↗</span></a>
+    <h1>Doom of Mokhaiotl <span>Loot Simulator</span></h1>
   </header>
 
   <main id="main" class="layout">
     <section class="panel controls-panel" aria-labelledby="plan-heading">
-      <div class="section-heading"><div><span class="eyebrow">01 / Configure</span><h2 id="plan-heading">Your delve runs</h2></div></div>
-      <p class="muted">Enter how many <strong>completed, claimed runs</strong> end at each depth. A run to delve 8 rolls loot on <em>every floor from 1 through 8</em>.</p>
+      <div class="section-heading"><h2 id="plan-heading">Your delve runs</h2></div>
       <div class="preset-row" role="group" aria-label="Suggested setups">
         <button type="button" data-preset-depth="8" data-preset-count="100">100 × 8</button>
-        <button type="button" data-preset-depth="9" data-preset-count="100">100 × 9</button>
-        <button type="button" data-preset-depth="16" data-preset-count="100">100 × 16</button>
+        <button type="button" data-preset-depth="9" data-preset-count="100">100 × 9+</button>
       </div>
       <form id="simulator-form" novalidate>
-        <div class="depth-head"><span>Final depth</span><span>Runs claimed</span></div>
         <div id="depth-inputs" class="depth-inputs"></div>
-        <button id="add-depth" class="add-depth" type="button">+ Add delve 17</button>
         <div class="planned-summary"><span>Planned runs</span><strong id="planned-runs">0 runs · 0 floor rolls</strong></div>
         <p id="validation-message" class="validation-message" role="alert" hidden></p>
         <div class="action-row">
@@ -42,54 +33,31 @@
           <button type="button" class="secondary-action" id="clear-button">Clear</button>
         </div>
       </form>
-      <p class="hint">Up to 50 delve levels and 1,000,000 floor rolls per simulation. All rolls happen locally in your browser.</p>
+      <p class="hint">9+ uses the level-9 rates and nine floor rolls per run. Maximum 1,000,000 floor rolls per simulation.</p>
     </section>
 
-    <div class="results-column">
-      <section class="panel overview-panel" aria-labelledby="results-heading">
-        <div class="section-heading results-heading">
-          <div><span class="eyebrow">02 / Rewards</span><h2 id="results-heading">Your loot</h2></div>
-          <button type="button" class="export-button" id="export-button" disabled>Export CSV ↓</button>
-        </div>
-        <div class="stats-row" aria-label="Simulation statistics">
-          <div class="stat"><span>Completed runs</span><strong id="stat-runs">—</strong></div>
-          <div class="stat"><span>Floor rolls</span><strong id="stat-floors">—</strong></div>
-          <div class="stat"><span>Rare drops + pet</span><strong id="stat-uniques">—</strong></div>
-          <div class="stat"><span>Demon tears</span><strong id="stat-tears">—</strong></div>
-        </div>
-        <div id="empty-state" class="empty-state">
-          <div class="empty-orb"><img src="./assets/items/eye-of-ayak.png" alt="" width="62" height="62"></div>
-          <h3>Nothing claimed yet</h3>
-          <p>Choose your delve depths, then simulate to see the spoils of the Doom.</p>
-        </div>
-        <div id="results-content" hidden>
-          <div class="subheading"><h3>Unique rewards</h3><span>Independent pet roll per eligible floor</span></div>
-          <div id="unique-grid" class="unique-grid"></div>
-          <div class="subheading inventory-title"><h3>Collected loot</h3><span id="item-count">0 types</span></div>
-          <div id="loot-grid" class="loot-grid"></div>
-          <p class="muted note">Quantities are combined across all simulated claimed runs. A new simulation rerolls everything.</p>
-        </div>
-      </section>
-      <section class="panel mechanics-panel" aria-labelledby="mechanics-heading">
-        <span class="eyebrow">03 / Behind the rolls</span>
-        <h2 id="mechanics-heading">How this works</h2>
-        <div class="explanation-grid">
-          <p><strong>Every floor counts.</strong> Each floor gives one normal-table roll, plus a separate chance at an elite clue scroll and eligible unique rewards.</p>
-          <p><strong>Depth matters.</strong> Common stacks use the Wiki's level-3 quantities and per-depth truncating multiplier; guaranteed demon tears begin at level 3.</p>
-          <p><strong>Uniques unlock.</strong> Cloth from 2, Eye of ayak from 3, treads from 4, and Dom from 6. Equipment rates improve through level 9 and then cap.</p>
-          <p><strong>Claimed runs only.</strong> Failed descents that forfeit rewards, existing elite clue possession and extra charges added to an equipped Eye are not simulated.</p>
-        </div>
-        <details>
-          <summary>See drop-rate assumptions</summary>
-          <p>The common table has 312 weighted tickets (e.g., 7/104 = 21/312). The equipment roll is mutually exclusive within a floor; the pet and clue scroll have independent rolls. Gear odds are 1/2,500 per eligible item at delve 2, 1/2,000 at 3, 1/1,350 at 4, 1/810 at 5, 1/765 at 6, 1/720 at 7, 1/630 at 8, and 1/540 at 9+. Dom is 1/1,000 at 6, 1/750 at 7, 1/500 at 8 and 1/250 at 9+. Elite clues are 1/75 at floors 1–2 and 1/50 at floors 3+.</p>
-        </details>
-      </section>
-    </div>
+    <section class="panel overview-panel" aria-labelledby="results-heading">
+      <div class="section-heading results-heading">
+        <h2 id="results-heading">Your loot</h2>
+      </div>
+      <div id="empty-state" class="empty-state">
+        <div class="empty-orb"><img src="./assets/items/eye-of-ayak.png" alt="" width="62" height="62"></div>
+        <h3>Nothing claimed yet</h3>
+        <p>Choose your delve depths, then simulate to see the spoils of the Doom.</p>
+      </div>
+      <div id="results-content" hidden>
+        <div class="subheading"><h3>Unique rewards</h3></div>
+        <div id="unique-grid" class="unique-grid"></div>
+        <div class="subheading inventory-title"><h3>Collected loot</h3><span id="item-count">0 types</span></div>
+        <div id="loot-grid" class="loot-grid"></div>
+        <p class="muted note">Quantities are combined across simulated runs. Simulate again to reroll.</p>
+      </div>
+    </section>
   </main>
 
   <footer>
     <span>Unofficial fan project. Not affiliated with Jagex.</span>
-    <span>Data reference: <a href="https://oldschool.runescape.wiki/w/Doom_of_Mokhaiotl">OSRS Wiki</a> · Inventory sprites locally hosted · <a href="https://github.com/KihiraLove/doom-loot-simulator">Source on GitHub</a></span>
+    <span>Drop data: <a href="https://oldschool.runescape.wiki/w/Doom_of_Mokhaiotl">OSRS Wiki</a> · Images stored locally · <a href="https://github.com/KihiraLove/doom-loot-simulator">GitHub</a></span>
   </footer>
 </body>
 </html>

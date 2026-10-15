@@ -40,7 +40,8 @@ export const SPECIAL_ITEMS = [
 export const CLUE = { id: "clue-scroll-elite", name: "Clue scroll (elite)" };
 export const ITEM_DETAILS = Object.fromEntries([...ITEMS, ...SPECIAL_ITEMS, CLUE].map(item => [item.id, item]));
 export const TABLE_SIZE = 312;
-export const MAX_DEPTH = 50;
+// All deeper delves use the level-9 rate tier. The 9+ input represents a nine-floor run.
+export const MAX_DEPTH = 9;
 export const MAX_FLOOR_ROLLS = 1_000_000;
 
 if (ITEMS.reduce((sum, item) => sum + item.weight, 0) !== TABLE_SIZE) {
@@ -115,7 +116,7 @@ export function validatePlan(plan) {
   let floors = 0;
   for (const row of plan) {
     if (!Number.isSafeInteger(row.depth) || row.depth < 1 || row.depth > MAX_DEPTH) {
-      throw new RangeError("Delve depth must be a whole number from 1 to " + MAX_DEPTH + ".");
+      throw new RangeError("Delve depth must be a whole number from 1 to 9 (9+ category).");
     }
     if (!Number.isSafeInteger(row.count) || row.count < 0) {
       throw new RangeError("Runs must be a non-negative whole number.");
