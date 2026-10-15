@@ -100,30 +100,54 @@ function addProbabilityCell(container, label, probability) {
   container.append(cell);
 }
 
+function renderDryResultCard(result, name, spriteId, combined = false) {
+  const card = document.createElement("section");
+  card.className = "dry-result-card" + (combined ? " dry-total-card" : "");
+  const header = document.createElement("div");
+  header.className = "dry-result-heading";
+  const title = document.createElement("div");
+  const heading = document.createElement("h3");
+  heading.textContent = name;
+  const expected = document.createElement("p");
+  expected.textContent = "Expected: " + numberWithDecimals(result.expected) +
+    " · Eligible drop rolls: " + number(result.attempts);
+  title.append(heading, expected);
+  header.append(makeSprite(spriteId), title);
+  card.append(header);
+
+  if (combined) {
+    const atLeastOne = document.createElement("p");
+    atLeastOne.className = "any-drop-chance";
+    const caption = document.createElement("span");
+    caption.textContent = "Chance of at least one unique drop";
+    const value = document.createElement("strong");
+    value.textContent = probabilityText(result.atLeastOne);
+    atLeastOne.append(caption, value);
+    card.append(atLeastOne);
+
+    const explanation = document.createElement("p");
+    explanation.className = "muted";
+    explanation.textContent = "Compared against " + number(result.count) +
+      " total drops entered across cloth, Eye, treads and Dom.";
+    card.append(explanation);
+  }
+
+  const odds = document.createElement("div");
+  odds.className = "dry-outcomes";
+  addProbabilityCell(odds, "Fewer than " + number(result.count), result.fewer);
+  addProbabilityCell(odds, "Exactly " + number(result.count), result.exact);
+  addProbabilityCell(odds, "More than " + number(result.count), result.more);
+  card.append(odds);
+  return card;
+}
+
 function renderDryResults(results) {
   dryResultsGrid.replaceChildren();
+  dryResultsGrid.append(renderDryResultCard(
+    results.anyUnique, "Any unique drop", "dom", true
+  ));
   for (const item of SPECIAL_ITEMS) {
-    const result = results[item.id];
-    const card = document.createElement("section");
-    card.className = "dry-result-card";
-    const header = document.createElement("div");
-    header.className = "dry-result-heading";
-    const title = document.createElement("div");
-    const name = document.createElement("h3");
-    name.textContent = item.name;
-    const expected = document.createElement("p");
-    expected.textContent = "Expected: " + numberWithDecimals(result.expected) +
-      " · Eligible floor rolls: " + number(result.attempts);
-    title.append(name, expected);
-    header.append(makeSprite(item.id), title);
-
-    const odds = document.createElement("div");
-    odds.className = "dry-outcomes";
-    addProbabilityCell(odds, "Fewer than " + number(result.count), result.fewer);
-    addProbabilityCell(odds, "Exactly " + number(result.count), result.exact);
-    addProbabilityCell(odds, "More than " + number(result.count), result.more);
-    card.append(header, odds);
-    dryResultsGrid.append(card);
+    dryResultsGrid.append(renderDryResultCard(results[item.id], item.name, item.id));
   }
   dryEmpty.hidden = true;
   dryResults.hidden = false;
@@ -274,18 +298,6 @@ inputs.addEventListener("input", () => {
   clearDryResults();
   showError("");
   updatePlanSummary();
-});
-
-document.querySelectorAll("[data-preset-depth]").forEach(button => {
-  button.addEventListener("click", () => {
-    const depth = Number(button.dataset.presetDepth);
-    inputs.querySelectorAll("input").forEach(input => {
-      input.value = Number(input.dataset.depth) === depth ? button.dataset.presetCount : "0";
-    });
-    showError("");
-    clearDryResults();
-    updatePlanSummary();
-  });
 });
 
 clearButton.addEventListener("click", () => {

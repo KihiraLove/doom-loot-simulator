@@ -7,10 +7,11 @@ An unofficial, **frontend-only** [Old School RuneScape](https://oldschool.runesc
 - Choose a number of completed, claimed runs for each delve tier **1–8 and 9+**.
 - Switch between **Loot simulator** and **Dry calculator** without re-entering delve counts.
 - The **9+** field combines the highest drop-rate tier: it simulates nine floors per run, using the level-9 drop rates on the final floor. If a player completes more than nine floors, the simulator **does not** grant extra rolls for the additional floors.
-- Presets for 100 delve-8 and 100 delve-9+ runs; repeat a simulation to reroll.
+- Enter delve counts directly and repeat a simulation to reroll.
 - Weighted common loot, guaranteed demon tears, independent clue and pet chances, and depth-gated equipment drops.
 - Aggregated loot and four unique rewards displayed using local OSRS inventory sprites; no CSV export.
 - The dry calculator accepts obtained **Mokhaiotl cloth**, **Eye of ayak**, **Avernic treads**, and **Dom pet** counts, and reports the probability of **fewer than**, **exactly**, or **more than** the observed count for each item.
+- The **Any unique drop** summary shows the chance to receive at least one of these four drops, plus fewer/exactly/more chances for the sum of their observed counts.
 - Matching dark brown/charcoal and muted gold colour palette from [BingoPlayerStats](https://github.com/KihiraLove/BingoPlayerStats).
 
 ## Dry calculator math
@@ -19,7 +20,7 @@ The dry calculator follows the probability approach of the [OSRS Wiki dry calcul
 
 For an item with observed count `k`, **fewer** = `P(X < k)`, **exactly** = `P(X = k)`, and **more** = `P(X > k)`. The three probabilities sum to 100% (subject to normal rounding). Each item also shows its expected count and number of eligible floor rolls. Unlike a single-drop dry formula, this supports varying floor probabilities.
 
-**Important:** probabilities are **per item**, not the joint probability of obtaining all four entered counts together. Cloth, Eye of ayak, and treads are mutually exclusive within an equipment roll; Dom uses an independent pet roll. The algorithm omits only numerically negligible distribution tails at the maximum supported simulation size. Extremely small outcomes may be rendered as approximately 0%.
+**Important:** the four individual probabilities are **per item**, not the joint probability of obtaining all four entered counts together. The **Any unique drop** result instead models the **total** unique-item count: each floor has one mutually exclusive equipment roll (with its chance equal to the sum of eligible equipment-item probabilities) and an independent Dom pet roll. Those two rolls can both succeed on a floor. Its at-least-one chance is calculated as one minus the probability of no eligible unique reward from any floor. Cloth, Eye of ayak, and treads are mutually exclusive within an equipment roll; Dom uses an independent pet roll. The algorithm omits only numerically negligible distribution tails at the maximum supported simulation size. Extremely small outcomes may be rendered as approximately 0%.
 
 No extra data, requests, cookies, tracking, or backend are needed. The `9+` category remains a nine-floor-run approximation rather than additional rolls for deeper floors.
 

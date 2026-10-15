@@ -25,10 +25,6 @@
   <main id="main" class="layout">
     <section class="panel controls-panel" aria-labelledby="plan-heading">
       <div class="section-heading"><h2 id="plan-heading">Your delve runs</h2></div>
-      <div class="preset-row" role="group" aria-label="Suggested setups">
-        <button type="button" data-preset-depth="8" data-preset-count="100">100 × 8</button>
-        <button type="button" data-preset-depth="9" data-preset-count="100">100 × 9+</button>
-      </div>
       <form id="simulator-form" novalidate>
         <div id="depth-inputs" class="depth-inputs"></div>
         <div id="dry-fields" class="dry-fields" hidden>
@@ -71,9 +67,9 @@
         <p>Choose your delve runs, enter your four drop counts, and calculate the odds.</p>
       </div>
       <div id="dry-results" hidden>
-        <p class="muted dry-intro">Chances for each item across the configured delve runs.</p>
+        <p class="muted dry-intro">Odds across the configured delve runs, including the total of all four unique rewards.</p>
         <div id="dry-results-grid" class="dry-results-grid"></div>
-        <p class="hint">Results are calculated separately for each item, not as one combined chance. Equipment rewards share a unique roll, while Dom rolls independently. Very small probabilities may round to zero.</p>
+        <p class="hint">The “Any unique drop” result combines all four drop counts; the individual item results are calculated separately. Equipment drops share a roll, while Dom rolls independently. Very small probabilities may round to zero.</p>
       </div>
     </section>
   </main>

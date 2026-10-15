@@ -120,6 +120,52 @@ export function chanceForCount(groups, obtained) {
   return { fewer, exact, more, expected, attempts };
 }
 
+// For the combined result, an equipment roll has one mutually exclusive
+// chance to award any eligible piece, and Dom can drop independently on the
+// same floor. These are two independent Bernoulli trials, not four separate
+// equipment rolls.
+export function anyUniqueRollGroups(plan) {
+  validatePlan(plan);
+  const groups = [];
+  for (let floor = 1; floor <= MAX_DEPTH; floor++) {
+    const trials = plan.reduce((sum, row) => sum + (row.depth >= floor ? row.count : 0), 0);
+    if (!trials) continue;
+
+    const eligibleGear = SPECIAL_ITEMS.slice(0, 3)
+      .filter(item => floor >= item.minimumDepth).length;
+    if (eligibleGear) {
+      groups.push({ floor, type: "equipment", trials, probability: eligibleGear / gearDenominator(floor) });
+    }
+    if (floor >= 6) {
+      groups.push({ floor, type: "pet", trials, probability: 1 / domDenominator(floor) });
+    }
+  }
+  return groups;
+}
+
+export function calculateAnyUniqueResult(plan, counts) {
+  validatePlan(plan);
+  let count = 0;
+  for (const item of SPECIAL_ITEMS) {
+    const value = counts[item.id];
+    if (!Number.isSafeInteger(value) || value < 0) {
+      throw new RangeError("Enter a non-negative whole number for " + item.name + ".");
+    }
+    count += value;
+    if (!Number.isSafeInteger(count)) {
+      throw new RangeError("Combined unique count is too large.");
+    }
+  }
+  const groups = anyUniqueRollGroups(plan);
+  const odds = chanceForCount(groups, count);
+  // P(at least one) = 1 - product((1-p)^trials), computed accurately even
+  // when the expected count is tiny.
+  const logNone = groups.reduce(
+    (sum, group) => sum + group.trials * Math.log1p(-group.probability), 0
+  );
+  return { count, ...odds, atLeastOne: -Math.expm1(logNone) };
+}
+
 export function calculateDryResults(plan, counts) {
   validatePlan(plan);
   const results = {};
@@ -134,5 +180,6 @@ export function calculateDryResults(plan, counts) {
       ...chanceForCount(uniqueRollGroups(plan, item.id), count)
     };
   }
+  results.anyUnique = calculateAnyUniqueResult(plan, counts);
   return results;
 }
