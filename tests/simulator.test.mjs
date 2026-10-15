@@ -89,7 +89,7 @@ test("simulation rejects invalid or expensive plans", () => {
   assert.doesNotThrow(() => validatePlan([{depth: 9, count: 1}]));
   assert.throws(() => validatePlan([{depth: 3, count: -1}]), /non-negative/);
   assert.throws(() => validatePlan([{depth: 1.5, count: 1}]), /Delve depth/);
-  assert.throws(() => validatePlan([{depth: 9, count: Math.floor(MAX_FLOOR_ROLLS / 9) + 1}]), /Limit/);
+  assert.throws(() => validatePlan([{depth: 9, count: MAX_FLOOR_ROLLS + 1}]), /Limit/);
 });
 
 test("9+ counts one level-9-or-deeper roll each, with capped rates", () => {
