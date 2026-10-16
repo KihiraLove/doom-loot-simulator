@@ -58,7 +58,9 @@ node --check simulator.mjs
 
 A workflow in `.github/workflows/pages.yml` deploys on pushes to `main` after validation. If needed, select **GitHub Actions** as the Pages source in repository settings.
 
-Site: https://kihiralove.github.io/doom-loot-simulator/ (boss picker)\n\nDoom simulator: https://kihiralove.github.io/doom-loot-simulator/doom/
+Site: https://kihiralove.github.io/doom-loot-simulator/ (boss picker)
+
+Doom simulator: https://kihiralove.github.io/doom-loot-simulator/doom/
 
 ## Loot model
 
