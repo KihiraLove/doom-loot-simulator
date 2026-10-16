@@ -1,4 +1,4 @@
-# Doom of Mokhaiotl — Loot Simulator
+# OSRS Loot Simulator and dry calculator
 
 [![Deploy GitHub Pages](https://github.com/KihiraLove/doom-loot-simulator/actions/workflows/pages.yml/badge.svg)](https://github.com/KihiraLove/doom-loot-simulator/actions/workflows/pages.yml)
 [![Ko-fi](https://img.shields.io/badge/Ko--fi-Support%20me-29ABE0?logo=ko-fi&logoColor=white)](https://ko-fi.com/KihiraLove)
