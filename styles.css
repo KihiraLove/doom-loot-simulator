@@ -373,3 +373,52 @@ footer p { margin: 0; }
   .site-header .kofi-banner { align-self: flex-start; margin-left: 0; }
   footer { align-items: flex-start; flex-direction: column; }
 }
+
+/* Boss picker: only a centered icon link until more simulators are added. */
+body.boss-selection-page {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+.boss-picker {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+  width: min(100% - 32px, 900px);
+}
+.boss-tile {
+  display: grid;
+  place-items: center;
+  width: 156px;
+  height: 156px;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  box-shadow: var(--shadow);
+  transition: border-color 140ms ease, transform 140ms ease;
+}
+.boss-tile:hover {
+  border-color: var(--accent-strong);
+  transform: translateY(-3px);
+}
+.boss-tile img {
+  display: block;
+  width: 96px;
+  height: 96px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+.simulator-navigation {
+  width: min(1500px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 18px 4px 0;
+}
+.back-link {
+  display: inline-block;
+  color: var(--muted);
+  font-size: .86rem;
+  text-decoration: none;
+}
+.back-link:hover { color: var(--accent-strong); }

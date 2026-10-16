@@ -189,7 +189,7 @@ function showError(message) {
 
 function makeSprite(id) {
   const image = document.createElement("img");
-  image.src = "./assets/items/" + id + ".png";
+  image.src = new URL("./assets/items/" + id + ".png", import.meta.url).href;
   image.alt = "";
   image.loading = "lazy";
   image.width = 36;
