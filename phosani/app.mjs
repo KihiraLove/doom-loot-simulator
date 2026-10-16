@@ -12,15 +12,12 @@ let mode = "loot";
 function icon(item) {
   const wrapper = document.createElement("span");
   wrapper.className = "phosani-icon";
-  wrapper.textContent = item.name.slice(0, 2).toUpperCase();
   const img = document.createElement("img");
-  // Static Wiki images only; no runtime rate queries.
-  img.src = "https://oldschool.runescape.wiki/images/" +
-    encodeURIComponent(item.name.replaceAll(" ", "_")) + ".png";
+  img.src = "../assets/items/" + item.id + ".png";
   img.alt = "";
   img.loading = "lazy";
   img.width = 36; img.height = 32;
-  img.addEventListener("load", () => wrapper.replaceChildren(img), { once:true });
+  wrapper.append(img);
   return wrapper;
 }
 function parseNumber(input, limit, label) {

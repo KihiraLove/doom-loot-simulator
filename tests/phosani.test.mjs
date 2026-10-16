@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import {
-  ARMOUR, ORBS, SIGNATURE, DRY_ITEMS, COMMON, ARMOUR_CHANCE, ORB_CHANCE,
+  ARMOUR, ORBS, SIGNATURE, DRY_ITEMS, COMMON, ITEMS, ARMOUR_CHANCE, ORB_CHANCE,
   simulate, rateOf, validateKills
 } from "../phosani/simulator.mjs";
 import { binomial, anySignatureOdds, calculateDry } from "../phosani/dry-calc.mjs";
@@ -95,4 +95,20 @@ test("new simulator has its own route and both calculators",()=>{
   assert.match(page,/src="\.\/app\.mjs"/);
   assert.match(app,/calculateDry/);
   assert.ok(SIGNATURE.length===8);
+});
+
+test("all Phosani rewards have local valid PNG sprites",()=>{
+  for (const item of ITEMS) {
+    const image = readFileSync(new URL("../assets/items/" + item.id + ".png",import.meta.url));
+    assert.deepEqual([...image.subarray(0,8)],[137,80,78,71,13,10,26,10],item.id + " is not PNG");
+  }
+});
+test("Phosani navigation and item graphics use the Little nightmare pet icon",()=>{
+  const read=path=>readFileSync(new URL("../"+path,import.meta.url),"utf8");
+  const home=read("index.html"),page=read("phosani/index.html"),app=read("phosani/app.mjs");
+  assert.match(home,/href="\.\/phosani\/"[\s\S]*?src="\.\/assets\/items\/little-nightmare\.png"/);
+  assert.match(page,/rel="icon" type="image\/png" href="\.\.\/assets\/items\/little-nightmare\.png"/);
+  assert.match(page,/class="brand-mark"[\s\S]*?src="\.\.\/assets\/items\/little-nightmare\.png"/);
+  assert.match(app,/img\.src = "\.\.\/assets\/items\/" \+ item\.id \+ "\.png"/);
+  assert.doesNotMatch(home+page+app,/phosani\.svg|https:\/\/oldschool\.runescape\.wiki\/images/);
 });
