@@ -1,11 +1,17 @@
-# OSRS Loot Simulator and dry calculator
+# OSRS Boss Loot Simulators
 
 [![Deploy GitHub Pages](https://github.com/KihiraLove/doom-loot-simulator/actions/workflows/pages.yml/badge.svg)](https://github.com/KihiraLove/doom-loot-simulator/actions/workflows/pages.yml)
 [![Ko-fi](https://img.shields.io/badge/Ko--fi-Support%20me-29ABE0?logo=ko-fi&logoColor=white)](https://ko-fi.com/KihiraLove)
 
-An unofficial, **frontend-only** [Old School RuneScape](https://oldschool.runescape.wiki/) loot simulator for the [Doom of Mokhaiotl](https://oldschool.runescape.wiki/w/Doom_of_Mokhaiotl). Hosted with GitHub Pages. No backend, build dependencies or runtime Wiki API calls.
+An unofficial, **frontend-only** collection of [Old School RuneScape](https://oldschool.runescape.wiki/) boss loot simulators. The first simulates the [Doom of Mokhaiotl](https://oldschool.runescape.wiki/w/Doom_of_Mokhaiotl). Hosted with GitHub Pages. No backend, build dependencies or runtime Wiki API calls.
 
-## Features
+## Boss selection
+
+The home page (`/`) is a boss picker with an icon for each supported boss. Select Doom of Mokhaiotl to open its simulator at [`/doom/`](./doom/). The simulator has a link back to the boss picker. New boss simulators can be added as separate subdirectories and linked from the home page without modifying Doom's calculations.
+
+All navigation and asset URLs are relative so the site also works under a renamed GitHub Pages project path. Renaming the repository **will change its GitHub Pages URL**, however, and old Pages URLs do not redirect automatically.
+
+## Doom of Mokhaiotl features
 
 - Choose how many **individual delves were completed at each level** 1–8 and 9+.
 - Switch between **Loot simulator** and **Dry calculator** without re-entering delve counts.
@@ -36,7 +42,7 @@ Serve the repository root using any static HTTP server:
 python3 -m http.server 8000
 ```
 
-Then visit http://localhost:8000. JavaScript modules may not work from a `file://` URL.
+Then visit http://localhost:8000/ for the boss picker, or http://localhost:8000/doom/ for the Doom simulator. JavaScript modules may not work from a `file://` URL.
 
 ## Tests
 
@@ -52,7 +58,9 @@ node --check simulator.mjs
 
 A workflow in `.github/workflows/pages.yml` deploys on pushes to `main` after validation. If needed, select **GitHub Actions** as the Pages source in repository settings.
 
-Site: https://kihiralove.github.io/doom-loot-simulator/
+Site: https://kihiralove.github.io/doom-loot-simulator/ (boss picker)
+
+Doom simulator: https://kihiralove.github.io/doom-loot-simulator/doom/
 
 ## Loot model
 
