@@ -21,3 +21,6 @@ jobs:
         run: |
           node --check simulator.mjs
           node --check app.mjs
+          node --check phosani/simulator.mjs
+          node --check phosani/dry-calc.mjs
+          node --check phosani/app.mjs

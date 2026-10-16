@@ -3,13 +3,21 @@
 [![Deploy GitHub Pages](https://github.com/KihiraLove/doom-loot-simulator/actions/workflows/pages.yml/badge.svg)](https://github.com/KihiraLove/doom-loot-simulator/actions/workflows/pages.yml)
 [![Ko-fi](https://img.shields.io/badge/Ko--fi-Support%20me-29ABE0?logo=ko-fi&logoColor=white)](https://ko-fi.com/KihiraLove)
 
-An unofficial, **frontend-only** collection of [Old School RuneScape](https://oldschool.runescape.wiki/) boss loot simulators. The first simulates the [Doom of Mokhaiotl](https://oldschool.runescape.wiki/w/Doom_of_Mokhaiotl). Hosted with GitHub Pages. No backend, build dependencies or runtime Wiki API calls.
+An unofficial, **frontend-only** collection of [Old School RuneScape](https://oldschool.runescape.wiki/) boss loot simulators. Includes [Doom of Mokhaiotl](https://oldschool.runescape.wiki/w/Doom_of_Mokhaiotl) and [Phosani's Nightmare](https://oldschool.runescape.wiki/w/Phosani%27s_Nightmare). Hosted with GitHub Pages. No backend, build dependencies or runtime Wiki API calls.
 
 ## Boss selection
 
-The home page (`/`) is a boss picker with an icon for each supported boss. Select Doom of Mokhaiotl to open its simulator at [`/doom/`](./doom/). The simulator has a link back to the boss picker. New boss simulators can be added as separate subdirectories and linked from the home page without modifying Doom's calculations.
+The home page (`/`) is a boss picker with an icon for each supported boss. Select Doom at [`/doom/`](./doom/) or Phosani's Nightmare at [`/phosani/`](./phosani/). Each simulator links back to the boss picker. New boss simulators can be added as separate subdirectories and linked from the home page without modifying Doom's calculations.
 
 All navigation and asset URLs are relative so the site also works under a renamed GitHub Pages project path. Renaming the repository **will change its GitHub Pages URL**, however, and old Pages URLs do not redirect automatically.
+
+## Phosani's Nightmare
+
+The Phosani-only [simulator and dry calculator](./phosani/) use the solo boss's own drop table, not the regular Nightmare's. Each kill awards Big bones and one common-loot roll. The staff/armour/mace table rolls at **1/140** and the separate orb table at **3/1,600**; both can award a signature drop on the same kill. Staff/armour/mace selection uses the April 2026 Mod Ash confirmation, including the 8% staff-to-mace swap.
+
+Common loot uses Phosani-specific quantity ranges. The Wiki's displayed common-table weights are **rounded** and add to 101%, so they are normalized as relative weights. Each simulated session starts at zero kill count. The Slepey tablet receives its random 1/25 roll, with a first tablet guaranteed by kill 25 if none previously dropped. Optional Elite Combat Achievements change the elite clue rate from 1/35 to 1/33. Elite clue ownership, prices, and previous account history are not tracked.
+
+The dry calculator supports the eight signature drops plus the Little nightmare pet, Parasitic egg and Jar of dreams. The **Any signature unique** result is the total count across the eight signature items, calculated by convolving the two independent table-roll distributions; a single kill can produce two such items. The pet, egg and jar have independent odds. Tablet guarantee and clues are not part of the dry calculator. All calculations run locally; static item images are requested from the OSRS Wiki with text-icon fallbacks. No Wiki drop rates are fetched at runtime.
 
 ## Doom of Mokhaiotl features
 
@@ -42,7 +50,7 @@ Serve the repository root using any static HTTP server:
 python3 -m http.server 8000
 ```
 
-Then visit http://localhost:8000/ for the boss picker, or http://localhost:8000/doom/ for the Doom simulator. JavaScript modules may not work from a `file://` URL.
+Then visit http://localhost:8000/ for the boss picker, http://localhost:8000/doom/ for Doom, or http://localhost:8000/phosani/ for Phosani's Nightmare. JavaScript modules may not work from a `file://` URL.
 
 ## Tests
 
@@ -52,6 +60,9 @@ Requires Node.js 20+, no installation step:
 node --test tests/*.test.mjs
 node --check app.mjs
 node --check simulator.mjs
+node --check phosani/simulator.mjs
+node --check phosani/dry-calc.mjs
+node --check phosani/app.mjs
 ```
 
 ## GitHub Pages
@@ -61,6 +72,8 @@ A workflow in `.github/workflows/pages.yml` deploys on pushes to `main` after va
 Site: https://kihiralove.github.io/doom-loot-simulator/ (boss picker)
 
 Doom simulator: https://kihiralove.github.io/doom-loot-simulator/doom/
+
+Phosani simulator: https://kihiralove.github.io/doom-loot-simulator/phosani/
 
 ## Loot model
 

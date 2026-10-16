@@ -32,6 +32,9 @@ jobs:
           node --test tests/*.test.mjs
           node --check simulator.mjs
           node --check app.mjs
+          node --check phosani/simulator.mjs
+          node --check phosani/dry-calc.mjs
+          node --check phosani/app.mjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
