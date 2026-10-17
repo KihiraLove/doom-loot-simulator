@@ -33,3 +33,6 @@ jobs:
           node --check cerberus/simulator.mjs
           node --check cerberus/dry-calc.mjs
           node --check cerberus/app.mjs
+          node --check mad-angel/simulator.mjs
+          node --check mad-angel/dry-calc.mjs
+          node --check mad-angel/app.mjs
