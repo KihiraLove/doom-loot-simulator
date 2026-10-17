@@ -38,6 +38,9 @@ jobs:
           node --check yama/simulator.mjs
           node --check yama/dry-calc.mjs
           node --check yama/app.mjs
+          node --check hydra/simulator.mjs
+          node --check hydra/dry-calc.mjs
+          node --check hydra/app.mjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
