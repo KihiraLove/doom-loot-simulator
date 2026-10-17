@@ -1,0 +1,14 @@
+.yama-output { min-width:0; display:grid; gap:22px; }
+.contribution { display:flex; flex-wrap:wrap; align-items:center; gap:8px 14px; border:0; padding:0; margin:0 0 16px; }
+.contribution legend { padding:0; margin-bottom:8px; color:var(--muted); font-size:.83rem; }
+.contribution label { flex:1; text-align:center; white-space:nowrap; padding:11px 10px; border:1px solid var(--border); background:var(--panel-2); cursor:pointer; color:var(--muted); font-size:.86rem; }
+.contribution label:has(input:checked) { border-color:var(--accent); color:var(--accent-strong); background:rgba(213,170,87,.08); }
+.contribution label:has(input:focus-visible) { outline:2px solid var(--accent-strong); outline-offset:2px; }
+.contribution input { width:16px; height:16px; margin-right:5px; accent-color:var(--accent); vertical-align:middle; }
+.yama-kills { margin-bottom:8px; }
+.yama-kills input { max-width:145px; }
+.opened-group+.opened-group { margin-top:22px; }
+.opened-group .muted { padding:8px 2px; margin:0; }
+.yama-output .unique-grid { grid-template-columns:repeat(4,minmax(0,1fr)); }
+@media(max-width:1100px){.yama-output .unique-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media(max-width:600px){.contribution{gap:8px;}.yama-output .unique-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}

@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="theme-color" content="#11100d">
+ <meta name="description" content="Yama loot simulator for solo (100%) and duo (50%) contribution, with lockbox and dossier openings and Yama-only dry calculator.">
+ <title>Yama | Loot Simulator</title>
+ <link rel="icon" type="image/png" href="../assets/items/yami.png">
+ <link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="./styles.css">
+ <script src="./app.mjs" type="module"></script>
+</head>
+<body>
+ <nav class="simulator-navigation" aria-label="Simulator navigation"><a class="back-link" href="../">← All simulators</a></nav>
+ <a class="skip-link" href="#main">Skip to simulator</a>
+ <header class="site-header">
+  <div class="brand-mark"><img src="../assets/items/yami.png" alt="" width="42" height="42"></div>
+  <h1>Yama <span>Loot Simulator</span></h1>
+  <a class="kofi-banner" href="https://ko-fi.com/KihiraLove" target="_blank" rel="noopener noreferrer" aria-label="Support KihiraLove on Ko-fi">
+   <img src="https://storage.ko-fi.com/cdn/cup-border.png" alt="" aria-hidden="true" width="24" height="24">
+   <span class="kofi-banner-label">Support me on Ko-fi</span>
+  </a>
+ </header>
+ <div class="mode-switch" role="group" aria-label="Calculator mode">
+  <button type="button" id="mode-loot" class="mode-button is-active" aria-pressed="true">Loot simulator</button>
+  <button type="button" id="mode-dry" class="mode-button" aria-pressed="false">Dry calculator</button>
+ </div>
+ <main class="layout" id="main">
+  <section class="panel controls-panel" aria-labelledby="plan-heading">
+   <div class="section-heading"><h2 id="plan-heading">Your kills</h2></div>
+   <form id="simulator-form" novalidate>
+    <fieldset class="contribution"><legend>Contribution</legend>
+     <label><input type="radio" name="contribution" value="1" checked> Solo (100%)</label>
+     <label><input type="radio" name="contribution" value="0.5"> Duo (50%)</label>
+    </fieldset>
+    <label class="depth-field yama-kills"><span>Completed kills</span>
+     <input type="number" id="kill-count" min="0" max="1000000" step="1" value="100" inputmode="numeric" aria-label="Completed Yama kills">
+    </label>
+    <div class="dry-fields" id="dry-fields" hidden>
+     <h3>Drops obtained</h3><div id="dry-inputs" class="dry-inputs"></div>
+    </div>
+    <p id="validation-message" class="validation-message" role="alert" hidden></p>
+    <div class="action-row"><button type="submit" class="primary-action"><span id="action-label">Simulate loot</span><span aria-hidden="true">→</span></button>
+     <button type="button" class="secondary-action" id="clear-button">Clear</button></div>
+   </form>
+  </section>
+  <div class="yama-output">
+   <section class="panel overview-panel" id="loot-panel" aria-labelledby="results-heading">
+    <div class="section-heading"><h2 id="results-heading">Your Yama loot</h2></div>
+    <div class="empty-state" id="empty-state">
+     <div class="empty-orb"><img src="../assets/items/yami.png" width="62" height="62" alt=""></div>
+     <h3>Nothing claimed yet</h3><p>Enter completed kills to simulate Yama drops.</p>
+    </div>
+    <div id="results-content" hidden>
+     <div class="subheading"><h3>Signature rewards</h3></div><div class="unique-grid" id="unique-grid"></div>
+     <div class="subheading inventory-title"><h3>Collected loot</h3></div><div class="loot-grid" id="loot-grid"></div>
+    </div>
+   </section>
+   <section class="panel opened-panel" id="opened-panel" aria-labelledby="opened-heading" hidden>
+    <div class="section-heading"><h2 id="opened-heading">Loot from lockboxes and dossiers</h2></div>
+    <div class="opened-group">
+     <div class="subheading"><h3 id="box-heading">Forgotten lockboxes opened: 0</h3></div><div class="loot-grid" id="box-grid"></div>
+     <p class="muted" id="box-empty" hidden>No lockboxes obtained.</p>
+    </div>
+    <div class="opened-group">
+     <div class="subheading"><h3 id="dossier-heading">Dossiers opened: 0</h3></div><div class="loot-grid" id="dossier-grid"></div>
+     <p class="muted" id="dossier-empty" hidden>No dossiers obtained.</p>
+    </div>
+   </section>
+   <section class="panel dry-panel" id="dry-panel" aria-labelledby="dry-heading" hidden>
+    <div class="section-heading"><h2 id="dry-heading">Dry calculator results</h2></div>
+    <div class="empty-state" id="dry-empty"><div class="empty-orb"><img src="../assets/items/yami.png" width="62" height="62" alt=""></div>
+     <h3>How lucky are your drops?</h3><p>Enter Yama kills and Yama-only drops to calculate the odds.</p>
+    </div>
+    <div id="dry-results" hidden><div class="dry-results-grid" id="dry-results-grid"></div></div>
+   </section>
+  </div>
+ </main>
+ <footer>
+  <div class="footer-meta"><p><strong>Drop data:</strong> <a href="https://oldschool.runescape.wiki/w/Yama" target="_blank" rel="noopener noreferrer">OSRS Wiki — Yama</a></p>
+   <p>No data is stored, collected, or sold by this site.</p>
+  </div>
+  <div class="footer-actions"><a class="text-button" href="https://github.com/KihiraLove/doom-loot-simulator" target="_blank" rel="noopener noreferrer">GitHub</a></div>
+ </footer>
+</body>
+</html>

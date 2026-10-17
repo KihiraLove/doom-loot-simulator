@@ -3,13 +3,23 @@
 [![Deploy GitHub Pages](https://github.com/KihiraLove/doom-loot-simulator/actions/workflows/pages.yml/badge.svg)](https://github.com/KihiraLove/doom-loot-simulator/actions/workflows/pages.yml)
 [![Ko-fi](https://img.shields.io/badge/Ko--fi-Support%20me-29ABE0?logo=ko-fi&logoColor=white)](https://ko-fi.com/KihiraLove)
 
-An unofficial, **frontend-only** collection of [Old School RuneScape](https://oldschool.runescape.wiki/) boss loot simulators. Includes [Doom of Mokhaiotl](https://oldschool.runescape.wiki/w/Doom_of_Mokhaiotl) and [Phosani's Nightmare](https://oldschool.runescape.wiki/w/Phosani%27s_Nightmare). Hosted with GitHub Pages. No backend, build dependencies or runtime Wiki API calls.
+An unofficial, **frontend-only** collection of [Old School RuneScape](https://oldschool.runescape.wiki/) boss loot simulators. Includes [Doom of Mokhaiotl](https://oldschool.runescape.wiki/w/Doom_of_Mokhaiotl) [Phosani's Nightmare](https://oldschool.runescape.wiki/w/Phosani%27s_Nightmare), and [Yama](https://oldschool.runescape.wiki/w/Yama). Hosted with GitHub Pages. No backend, build dependencies or runtime Wiki API calls.
 
 ## Boss selection
 
-The home page (`/`) is a boss picker with an icon for each supported boss. Select Doom at [`/doom/`](./doom/) or Phosani's Nightmare at [`/phosani/`](./phosani/). Each simulator links back to the boss picker. New boss simulators can be added as separate subdirectories and linked from the home page without modifying Doom's calculations.
+The home page (`/`) is a boss picker with an icon for each supported boss. Select Doom at [`/doom/`](./doom/) Phosani's Nightmare at [`/phosani/`](./phosani/), or Yama at [`/yama/`](./yama/). Each simulator links back to the boss picker. New boss simulators can be added as separate subdirectories and linked from the home page without modifying Doom's calculations.
 
 All navigation and asset URLs are relative so the site also works under a renamed GitHub Pages project path. Renaming the repository **will change its GitHub Pages URL**, however, and old Pages URLs do not redirect automatically.
+
+## Yama
+
+The [Yama simulator and dry calculator](./yama/) support **Solo (100% contribution)** and **Duo (50% contribution)** above the kill-count field. These model ordinary (non-contract) Yama encounters. Each player receives their own sequential roll: equipment at contribution/120, dossier at contribution/12 if the equipment roll fails, forgotten lockbox at 1/30 if preceding rolls fail, and oathplate shards at 1/15 if preceding rolls fail. A standard drop follows when no earlier reward succeeds. Normal loot quantities and the 12-shard quantity scale with contribution; Yami (1/2,500) and elite clues (1/30) roll independently. The supply table can produce several different supplies on one roll.
+
+The loot page presents **Yama drops separately from opening rewards**. For each simulated lockbox, one of the 403 weighted lockbox outcomes is rolled. For each simulated dossier, one of the 1,740 weighted outcomes is rolled, with the Rite of vile transference guaranteed for the first dossier opened at or after 100 Yama KC if it was not already obtained. Simulated dossiers are opened immediately on the kill they drop. Later rite rolls become 15–18 chasm teleport scrolls because this model assumes the first rite was already learned. All reward icons are local OSRS item sprites from [osrsreboxed-db](https://github.com/RSPSApp/osrsreboxed-db).
+
+The Yama dry calculator **does not include any lockbox or dossier-opening rewards**, nor any contracted Yama fights. It displays Yama-only rates for equipment, dossier, oathplate shards, and Yami at the chosen contribution. Forgotten lockboxes are excluded from dry-input/output results. Shard counts are in units of 12 (solo) or 6 (duo). “Any equipment drop or Yami” combines the equipment and independent pet rolls. All results are independent simulations; no account-specific prior history, elite clue ownership, or prices are tracked.
+
+Sources: [Yama](https://oldschool.runescape.wiki/w/Yama), [Dossier](https://oldschool.runescape.wiki/w/Dossier), and [Forgotten lockbox](https://oldschool.runescape.wiki/w/Forgotten_lockbox). Numbers match Wiki tables retrieved October 2026.
 
 ## Phosani's Nightmare
 
@@ -50,7 +60,7 @@ Serve the repository root using any static HTTP server:
 python3 -m http.server 8000
 ```
 
-Then visit http://localhost:8000/ for the boss picker, http://localhost:8000/doom/ for Doom, or http://localhost:8000/phosani/ for Phosani's Nightmare. JavaScript modules may not work from a `file://` URL.
+Then visit http://localhost:8000/ for the boss picker, http://localhost:8000/doom/ for Doom, http://localhost:8000/phosani/ for Phosani's Nightmare, or http://localhost:8000/yama/ for Yama. JavaScript modules may not work from a `file://` URL.
 
 ## Tests
 
@@ -63,6 +73,9 @@ node --check simulator.mjs
 node --check phosani/simulator.mjs
 node --check phosani/dry-calc.mjs
 node --check phosani/app.mjs
+node --check yama/simulator.mjs
+node --check yama/dry-calc.mjs
+node --check yama/app.mjs
 ```
 
 ## GitHub Pages
@@ -74,6 +87,8 @@ Site: https://kihiralove.github.io/doom-loot-simulator/ (boss picker)
 Doom simulator: https://kihiralove.github.io/doom-loot-simulator/doom/
 
 Phosani simulator: https://kihiralove.github.io/doom-loot-simulator/phosani/
+
+Yama simulator: https://kihiralove.github.io/doom-loot-simulator/yama/
 
 ## Loot model
 

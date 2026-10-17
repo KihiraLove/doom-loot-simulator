@@ -24,3 +24,6 @@ jobs:
           node --check phosani/simulator.mjs
           node --check phosani/dry-calc.mjs
           node --check phosani/app.mjs
+          node --check yama/simulator.mjs
+          node --check yama/dry-calc.mjs
+          node --check yama/app.mjs
