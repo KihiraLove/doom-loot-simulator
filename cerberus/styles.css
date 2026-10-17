@@ -1,0 +1,19 @@
+/* Phosani-specific presentation atop the shared OSRS simulator theme. */
+.phosani-kills { margin-bottom: 12px; }
+.phosani-kills input { max-width: 145px; }
+.phosani-option {
+  display:flex; align-items:center; gap:8px; margin:12px 0 4px;
+  color:var(--muted); font-size:.8rem; line-height:1.45;
+}
+.phosani-option input { width:16px; height:16px; accent-color:var(--accent); }
+.phosani-icon {
+  width:36px; height:32px; flex:0 0 36px;
+  display:inline-flex; align-items:center; justify-content:center;
+  background:var(--panel-2); border:1px solid var(--border-soft);
+  font:700 11px/1 Georgia,serif; color:var(--accent-strong);
+}
+.phosani-icon img { display:block; width:36px; height:32px; object-fit:contain; image-rendering:pixelated; }
+.loot-icon .phosani-icon { background:transparent; border:0; }
+.dry-result-heading .phosani-icon { width:42px; height:42px; flex-basis:42px; }
+.dry-result-heading .phosani-icon img { width:42px; height:42px; }
+@media(max-width:390px) { .phosani-kills { flex-wrap:wrap; } }

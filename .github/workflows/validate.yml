@@ -30,3 +30,6 @@ jobs:
           node --check hydra/simulator.mjs
           node --check hydra/dry-calc.mjs
           node --check hydra/app.mjs
+          node --check cerberus/simulator.mjs
+          node --check cerberus/dry-calc.mjs
+          node --check cerberus/app.mjs

@@ -3,13 +3,23 @@
 [![Deploy GitHub Pages](https://github.com/KihiraLove/doom-loot-simulator/actions/workflows/pages.yml/badge.svg)](https://github.com/KihiraLove/doom-loot-simulator/actions/workflows/pages.yml)
 [![Ko-fi](https://img.shields.io/badge/Ko--fi-Support%20me-29ABE0?logo=ko-fi&logoColor=white)](https://ko-fi.com/KihiraLove)
 
-An unofficial, **frontend-only** collection of [Old School RuneScape](https://oldschool.runescape.wiki/) boss loot simulators. Includes [Doom of Mokhaiotl](https://oldschool.runescape.wiki/w/Doom_of_Mokhaiotl), [Phosani's Nightmare](https://oldschool.runescape.wiki/w/Phosani%27s_Nightmare), [Yama](https://oldschool.runescape.wiki/w/Yama), and [Alchemical Hydra](https://oldschool.runescape.wiki/w/Alchemical_Hydra). Hosted with GitHub Pages. No backend, build dependencies or runtime Wiki API calls.
+An unofficial, **frontend-only** collection of [Old School RuneScape](https://oldschool.runescape.wiki/) boss loot simulators. Includes [Doom of Mokhaiotl](https://oldschool.runescape.wiki/w/Doom_of_Mokhaiotl), [Phosani's Nightmare](https://oldschool.runescape.wiki/w/Phosani%27s_Nightmare), [Yama](https://oldschool.runescape.wiki/w/Yama), [Alchemical Hydra](https://oldschool.runescape.wiki/w/Alchemical_Hydra), and [Cerberus](https://oldschool.runescape.wiki/w/Cerberus). Hosted with GitHub Pages. No backend, build dependencies or runtime Wiki API calls.
 
 ## Boss selection
 
-The home page (`/`) is a boss picker with an icon for each supported boss. Select Doom at [`/doom/`](./doom/), Phosani's Nightmare at [`/phosani/`](./phosani/), Yama at [`/yama/`](./yama/), or Alchemical Hydra at [`/hydra/`](./hydra/). Each simulator links back to the boss picker. New boss simulators can be added as separate subdirectories and linked from the home page without modifying Doom's calculations.
+The home page (`/`) is a boss picker with an icon for each supported boss. Select Doom at [`/doom/`](./doom/), Phosani's Nightmare at [`/phosani/`](./phosani/), Yama at [`/yama/`](./yama/), Alchemical Hydra at [`/hydra/`](./hydra/), or Cerberus at [`/cerberus/`](./cerberus/). Each simulator links back to the boss picker. New boss simulators can be added as separate subdirectories and linked from the home page without modifying Doom's calculations.
 
 All navigation and asset URLs are relative so the site also works under a renamed GitHub Pages project path. Renaming the repository **will change its GitHub Pages URL**, however, and old Pages URLs do not redirect automatically.
+
+## Cerberus
+
+The [Cerberus loot simulator and dry calculator](./cerberus/) model Cerberus's current table (not Echo Cerberus). Every completed kill yields one **Infernal ashes**. One main table roll has 130 equally weighted tickets: four mutually exclusive crystal/stone outcomes (one ticket each, **1/520** for Primordial crystal, Pegasian crystal, Eternal crystal and Smouldering stone) and 126 tickets for the listed common items, including the current batch of **seven Key master teleports** when selected.
+
+The source also lists a **3/130 rare-drop-table access**, although its 130-ticket main table is already complete. This implementation treats the rare table as an *additional independent roll*, using the listed approximate item-rate proportions conditional on entry, including a possible nothing result. This is an explicit modelling choice for otherwise conflicting table totals. No ring of wealth or Legends' Quest adjustments are modelled. Tertiary rolls are separate: Ensouled hellhound head (1/15), elite clue (1/100 or 1/95 with **Elite Combat Achievements**), Jar of souls (1/2,000), and **Hellpuppy** (1/3,000). The optional **Konar task** toggle enables Brimstone keys (1/45); they are absent otherwise. Normal elite clue ownership and the special guaranteed elite-clue-task drops are not modelled.
+
+The dry calculator shows **fewer than, exactly, and more than** the observed counts for each crystal, Smouldering stone, Jar of souls and Hellpuppy. Its **Any crystal or stone** summary uses the one-in-130 *mutually exclusive unique table*, rather than pretending the four crystals/stones roll independently. Jar and pet probabilities are calculated separately. All item graphics are local sprites from [osrsreboxed-db](https://github.com/RSPSApp/osrsreboxed-db), and the Hellpuppy pet sprite is the boss selector icon.
+
+Sources: [Cerberus (OSRS Wiki)](https://oldschool.runescape.wiki/w/Cerberus) and [Cerberus drop table (Reldo)](https://reldo.org/a/cerberus/).
 
 ## Alchemical Hydra
 
@@ -70,7 +80,7 @@ Serve the repository root using any static HTTP server:
 python3 -m http.server 8000
 ```
 
-Then visit http://localhost:8000/ for the boss picker, http://localhost:8000/doom/ for Doom, http://localhost:8000/phosani/ for Phosani's Nightmare, http://localhost:8000/yama/ for Yama, or http://localhost:8000/hydra/ for Alchemical Hydra. JavaScript modules may not work from a `file://` URL.
+Then visit http://localhost:8000/ for the boss picker, http://localhost:8000/doom/ for Doom, http://localhost:8000/phosani/ for Phosani's Nightmare, http://localhost:8000/yama/ for Yama, http://localhost:8000/hydra/ for Alchemical Hydra, or http://localhost:8000/cerberus/ for Cerberus. JavaScript modules may not work from a `file://` URL.
 
 ## Tests
 
@@ -89,6 +99,9 @@ node --check yama/app.mjs
 node --check hydra/simulator.mjs
 node --check hydra/dry-calc.mjs
 node --check hydra/app.mjs
+node --check cerberus/simulator.mjs
+node --check cerberus/dry-calc.mjs
+node --check cerberus/app.mjs
 ```
 
 ## GitHub Pages
@@ -104,6 +117,8 @@ Phosani simulator: https://kihiralove.github.io/doom-loot-simulator/phosani/
 Yama simulator: https://kihiralove.github.io/doom-loot-simulator/yama/
 
 Alchemical Hydra simulator: https://kihiralove.github.io/doom-loot-simulator/hydra/
+
+Cerberus simulator: https://kihiralove.github.io/doom-loot-simulator/cerberus/
 
 ## Loot model
 
